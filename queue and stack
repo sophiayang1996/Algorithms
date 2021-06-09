@@ -1,0 +1,86 @@
+1.python 实现 stack
+
+class stack(object):
+    def __init__(self):
+        self.items = []
+    def is_empty(self):
+        return self.items == []
+    def peek(self):
+        return self.items[-1]
+    def push(self,i):
+        self.items.append(i)
+    def pop(self):
+        return self.items.pop()
+        
+2.python 实现 queue
+
+class queue(object):
+    def __init__(self):
+        queue.items = []
+    def is_empty(self):
+        return queue.items == []
+    def peek(self):
+        return queue.items[0]
+    def push(self,i):
+        queue.items.append(i)
+    def pop(self):
+        return queue.items.pop(0)
+
+
+3. 用stack实现queue
+
+class myqueue(object):
+    def __init__(self):
+        myqueue.stackin = []
+        myqueue.stackout = []
+    def is_empty(self):
+        if myqueue.stackin == [] and myqueue.stackout == []:
+            return True
+        else: return False
+    def peek(self):
+        if not myqueue.stackout:
+            while myqueue.stackin:
+                a = myqueue.stackin.pop()
+                myqueue.stackout.append(a)
+        return myqueue.stackout[-1]
+    def push(self,i):
+        myqueue.stackin.append(i)
+    def pop(self):
+        if not myqueue.stackout:
+            while myqueue.stackin:
+                a = myqueue.stackin.pop()
+                myqueue.stackout.append(a)
+        return myqueue.stackout.pop()
+ 
+ #### 注意 应该更妥善的方法是 先定义 stack 然后 myqueue.stack1 = stack()
+ 
+4. 用 queue 实现 stack:
+
+class MyStack(object):
+    def __init__(self):
+        self.queue1 = Queue()                       # 一个基本队列
+        self.queue2 = Queue()                       # 一个辅助队列
+
+    def push(self, i):
+        self.queue1.push(i)                         
+
+    def pop(self):
+        while self.queue1.length() > 1:               # 卡住最后一个要出队的数
+            self.queue2.push(self.queue1.pop())     # 队头元素出队出队后马上进入辅助队列
+
+        res = self.queue1.pop()                     # 最后一个准备出队的元素就是要弹出的栈顶元素
+
+        while self.queue2:             # 只要辅助队列还有元素
+            self.queue1.push(self.queue2.pop())     # 将辅助队列中的所有元素依次归还基本队列
+        return res                                  # 返回结果
+
+    def peek(self):
+        while self.queue1.length() > 1:               # 卡住最后一个要出队的数
+            self.queue2.push(self.queue1.pop())     # 队头元素出队出队后马上进入辅助队列
+
+        res = self.queue1.pop()                     # 最后一个准备出队的元素就是要返回的栈顶元素
+        self.queue2.push(res)
+
+        while self.queue2:             # 只要辅助队列还有元素
+            self.queue1.push(self.queue2.pop())     # 将辅助队列中的所有元素依次归还基本队列
+        return res                                  # 返回结果
