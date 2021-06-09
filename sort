@@ -214,3 +214,41 @@ def bubblesort(num):
         for j in range(len(num)-i-1):
             if num[j] > num[j+1]:
                 num[j],num[j+1] = num[j+1],num[j]
+
+
+
+
+
+8. heap sort
+
+def heapsort(num):
+    n = len(num)
+    
+    for i in range(n,-1,-1):
+        heap_sort(num,n,i)
+    
+    for i in range(n-1,0,-1):
+        num[0],num[i] = num[i],num[0]
+        heap_sort(num,i,0)  ### 注意这个size是i而不是n， 否则一定出错，（即表明了去掉元素）
+        
+def heap_sort(num,n,i):
+    largest = i
+    left = 2*i+1  #### 堆的特点 
+    right = 2*i+2
+    if left < n and num[left] > num[i]:
+        largest = left
+    if right < n and num[right] > num[largest]:
+        largest = right
+    
+    if largest!=i:
+        num[largest],num[i] = num[i],num[largest]
+        heap_sort(num,n,largest)    ####这个不能少，将上一层元素传到应该去的层次
+
+
+##堆排序
+# 进行升序排序构建大根堆，然后将堆顶元素与堆的最后一个元素交换，然后去掉最后一个堆元素，
+# 将剩下的堆部分，重新构建大根堆，然后进行交换，直至堆只剩一个元素
+#时间复杂度：平均O(nlogn), 最坏O(nlogn), 最好O(nlogn)
+#稳定
+
+相当于优化的选择排序，利用了数据结构，减少了循环次数，每次元素都要正确排列层次，但是并不意味着树从左到右是顺序的，所以要冒泡到最后一个单位，再次heap到big heap上
