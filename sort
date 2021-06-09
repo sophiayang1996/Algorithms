@@ -61,7 +61,7 @@ def partition(num, l, r):
 # 时间复杂度：平均O(nlogn), 最坏O(nlogn), 最好O(nlogn)
 # 不稳定
 
-个人总结：不断partition过程对num直接排序更改 所以没有return；重点在p点的计算。
+个人总结：不断partition过程对num直接排序更改 所以没有return；重点在p点的计算。由大到小。
     
     
     
@@ -107,7 +107,7 @@ print(mergesort(arr))
 # 稳定
 
 个人总结：从下而上; 分治法：函数内部循环，如果return中有循环变量，则知道循环变量return条件没有为止，再一次向上传递return（所以主函数中一定有终止条件return num）；
-  不修改输入num，使用list来重新记录。
+  不修改输入num，使用list来重新记录。由小滚大。
   
   
   
@@ -251,4 +251,31 @@ def heap_sort(num,n,i):
 #时间复杂度：平均O(nlogn), 最坏O(nlogn), 最好O(nlogn)
 #稳定
 
-相当于优化的选择排序，利用了数据结构，减少了循环次数，每次元素都要正确排列层次，但是并不意味着树从左到右是顺序的，所以要冒泡到最后一个单位，再次heap到big heap上
+相当于优化的选择排序，利用了数据结构，减少了循环次数，每次元素都要正确排列层次，但是并不意味着树从左到右是顺序的，所以要冒泡到最后一个单位，再次heap到big heap上。
+
+
+
+
+
+9. shell sort
+
+def shellsort(num):  
+    
+    d = len(num)//2
+    while d>=1:     #### 一直缩小d直到d=1
+        num = shell_sort(num,d)
+        d = d//2
+
+def shell_sort(num,d):
+    
+    for i in range(len(num)//d):
+        for j in range(i):
+            back = i*d
+            forward = j*d
+            if num[forward] > num[back]:
+                num[forward],num[back] = num[back],num[forward]
+    return num
+   
+##插入排序升级版——希尔排序
+#时间复杂度：平均O(n^1.3), 最坏O(n^2), 最好O(n)
+#不稳定
