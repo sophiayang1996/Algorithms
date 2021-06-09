@@ -202,3 +202,15 @@ def insertsort(num):
                 
 #时间复杂度：平均O(n^2), 最坏O(n^2), 最好O(n)
 #稳定的排序算法               
+
+
+
+
+
+7. bubble sort
+
+def bubblesort(num):
+    for i in range(len(num)):
+        for j in range(len(num)-i-1):
+            if num[j] > num[j+1]:
+                num[j],num[j+1] = num[j+1],num[j]
