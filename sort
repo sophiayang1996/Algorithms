@@ -1,0 +1,204 @@
+quick sort
+merge sort
+bubble sort
+select sort
+insert sort
+bucket sort
+radix sort
+count sort
+heap sort
+
+
+1. quick sort
+
+def QuickSort(num):
+    """
+    快速排序的入口程序
+    """
+    l = 0
+    r = len(num)-1
+    quick_sort(num, l, r)
+
+def quick_sort(num, l, r):
+    """
+    快速排序的主程序
+    :param array: 待排序的序列
+    :param l: 序列最左端的元素指针
+    :param r: 序列最右端的元素指针
+    """ 
+    if l < r:
+        p = partition(num, l, r)
+        quick_sort(num, l, p-1)
+        quick_sort(num, p+1, r)
+
+def partition(num, l, r):
+    """
+    分片操作，将未排序的数组按照与基准值的大小关系分割为左右两部分。
+    采用双指针， s（慢指针）指向写入比基准值大的元素的位置，f（快指针）遍历数组
+    :param array:  输入未排序的数组
+    :param l: 序列的最左端指针
+    :param r:  序列的最右端指针
+    :return: 返回基准值的放置位置
+    """
+    b = num[l]  #基准值为序列最左边的值
+    s =  l   # 慢指针，指向大于基准值的元素的写入地址
+
+    for f in range(l+1 ,  r+1):
+        ## 将小于基准值的元素，交换至i指向的地址
+        if num[f] < b:
+            s += 1
+            num[s], num[f] = num[f], num[s]
+
+    num[s],num[l] = num[l],num[s]
+    return s
+
+    
+## 快速排序
+# 首先找到一个基准值，一般将序列的第一个元素作为基准值
+# 将比基准值小的元素均放置在基准值左边，大于基准值的放置在右边
+# 然后递归处理左边与右边的序列
+
+# 时间复杂度：平均O(nlogn), 最坏O(nlogn), 最好O(nlogn)
+# 不稳定
+
+个人总结：不断partition过程对num直接排序更改 所以没有return；重点在p点的计算。
+    
+    
+    
+    
+2. merge sort
+ 
+def mergesort(num):
+    
+    if len(num) <= 1: return num #终止条件
+    
+    mid = len(num)//2
+    
+    left = mergesort(num[:mid])
+    right = mergesort(num[mid:]) #分
+    
+    return merge_sort(left,right) #治
+ 
+ def merge_sort(left,right):
+    i,j = 0,0
+    li = []
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            li.append(left[i])
+            i+=1
+        else:
+            li.append(right[j])
+            j+=1
+    
+    li.extend(left[i:]) #加入剩下的已排序
+    li.extend(right[j:])
+    return li
+    
+arr = [1,5,6,3,1]
+print(mergesort(arr))
+
+ ##归并排序
+# 分而治之的思想
+# step1 分解：将原问题分解为若干个规模较小，相互独立，与原问题形式相同的子问题；
+# step2 解决：若子问题规模较小而容易被解决则直接解，否则递归地解各个子问题
+# step3 合并：将各个子问题的解合并为原问题的解。
+# 将原始数组逐渐一分为二，直到不能拆分，最终得到单元素即为已经排序，然后进行合并两个已排序的子序列
+# 时间复杂度：平均O(nlogn), 最坏O(nlogn), 最好O(nlogn)
+# 稳定
+
+个人总结：从下而上; 分治法：函数内部循环，如果return中有循环变量，则知道循环变量return条件没有为止，再一次向上传递return（所以主函数中一定有终止条件return num）；
+  不修改输入num，使用list来重新记录。
+  
+  
+  
+  
+  
+3. radix sort
+
+def radixsort(num):
+    lev = 1
+    bucket_num = 10
+    loop_num = len(str(max(num)))
+    buckets = [[] for i in range(bucket_num)]
+    
+    while loop_num:
+        for i in num:
+            buckets[i//lev%bucket_num].append(i)
+        
+        j = 0
+        for bucket in buckets:
+            while i:
+                num[j] = bucket.pop(0)
+        
+        loop_num -= 1
+        lev *= 10
+        
+##基数排序
+# 桶排序的一种扩展
+# 仅仅使用10个桶，标号为0-9
+# 分别对待排序数组，个位，十位， ... 分别进行桶排序
+# 时间复杂度：平均O(n*k), 最坏O(n*k), 最好O(n*k)
+# 稳定
+
+
+
+
+
+4. count sort
+
+def countsort(num):
+    buckets = [0]*(max(num)+1)
+    for n in num:
+        buckets[n] += 1
+    i = 0
+    for n in range(len(buckets)):
+        while buckets[n] > 0:
+            num[i] = n
+            buckets[n] -= 1
+            i += 1
+
+
+## 计数排序
+# 时间复杂度：平均O(n+k), 最坏O(n+k), 最好O(n+k)
+# 稳定
+
+注意：靠的是n在range中的顺序，所以不能使用for n in buckets来循环
+
+
+
+
+5. bucket sort
+
+def bucketsort(num):
+    minv,maxv = min(num),max(num)
+    bucketsize = 5 
+    bucket_num = (maxv-minv)//5 + 1
+    buckets = [[] for i in range(bucket_num)]
+    
+    for n in num:
+        buckets[(n-minv)//bucketsize].append(n)
+        
+    i=[]
+    
+    for bucket in buckets:
+        quicksort(bucket)
+        i.extend(bucket)
+    
+    return i
+    
+# 时间复杂度：平均O(n+k), 最坏O(n^2), 最好O(n)
+# 稳定
+
+
+
+
+6. insert sort
+
+def insertsort(num):
+    for n in range(len(num)):
+        for i in range(n):
+            if num[n] < num[i]:
+                num[n],num[i] = num[i],num[n]
+                
+#时间复杂度：平均O(n^2), 最坏O(n^2), 最好O(n)
+#稳定的排序算法               
