@@ -1,3 +1,6 @@
 遍历：非线性结构的每一项 traversal
 迭代：线性结构的每一项 iteration
-递归：还原基本情况的算法 resursion
+递归：还原基本情况的算法 recursion
+
+iteration is a funtion executes the set of instructions in like FOR loops and WHILE loops
+recuresion is a funtion calls itself within the code and then executes the set of instructions repeatedly 
